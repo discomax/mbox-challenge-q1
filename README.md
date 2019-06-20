@@ -1,4 +1,4 @@
-#The Challenge
+# The Challenge
 
 All Inbox, LLC does lots of formatting, templating, and automation of digital media, content, and marketing.  One of those mediums is email. All Inbox sends lots of emails. Millions of them. We need to reformat this email inbox file (called an mbox).  Can you help us?
 
