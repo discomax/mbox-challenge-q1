@@ -56,7 +56,7 @@ def revise_msg(mbox_msg):
     
     
 #for message in mbox:
-revise_msg(mbox[10])
+revise_msg(mbox[0])
 mbox.unlock()
 #if __name__ == '__main__':
     
