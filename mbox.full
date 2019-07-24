@@ -5,7 +5,6 @@ From: A (zzz)
       <a.u.thor@example.com> (Comment)
 Date: Fri, 9 Jun 2006 00:44:16 -0700
 Subject: [PATCH] a commit.
-Status: O
 
 Here is a patch from A U Thor.
 
@@ -27,7 +26,6 @@ From nobody Mon Sep 17 00:00:00 2001
 From: A U Thor <a.u.thor@example.com>
 Date: Fri, 9 Jun 2006 00:44:16 -0700
 Subject: [PATCH] another patch
-Status: O
 
 Here is a patch from A U Thor.  This addresses the issue raised in the
 message:
@@ -68,7 +66,6 @@ From nobody Mon Sep 17 00:00:00 2001
 From: Junio C Hamano <junio@kernel.org>
 Date: Fri, 9 Jun 2006 00:44:16 -0700
 Subject: re: [PATCH] another patch
-Status: O
 
 From: A U Thor <a.u.thor@example.com>
 Subject: [PATCH] third patch
@@ -114,7 +111,6 @@ Content-Transfer-Encoding: 7bit
 X-Trace: sea.gmane.org 1121951434 29350 80.91.229.2 (21 Jul 2005 13:10:34 GMT)
 X-Complaints-To: usenet@sea.gmane.org
 NNTP-Posting-Date: Thu, 21 Jul 2005 13:10:34 +0000 (UTC)
-Status: O
 
 Hello.
 
@@ -234,7 +230,6 @@ X-Complaints-To: usenet@sea.gmane.org
 NNTP-Posting-Date: Mon, 15 Aug 2005 18:24:07 +0000 (UTC)
 Cc: "Junio C. Hamano" <junkio@cox.net>
 Original-X-From: git-owner@vger.kernel.org Mon Aug 15 20:24:05 2005
-Status: O
 
 The git-cvsimport-script had a copule of small bugs that prevented me
 from importing a big CVS repository.
@@ -377,7 +372,6 @@ References: <Pine.LNX.4.640.0001@woody.linux-foundation.org>
  <Pine.LNX.4.640.0050@woody.linux-foundation.org>
 Date: Fri, 9 Jun 2006 00:44:16 -0700
 Subject: [PATCH] a commit.
-Status: O
 
 Here is a patch from A U Thor.
 
@@ -399,7 +393,6 @@ From nobody Mon Sep 17 00:00:00 2001
 From: A U Thor <a.u.thor@example.com>
 Date: Fri, 9 Jun 2006 00:44:16 -0700
 Subject: [PATCH] another patch
-Status: O
 
 Here is an empty patch from A U Thor.
 
@@ -407,7 +400,6 @@ From nobody Mon Sep 17 00:00:00 2001
 From: Junio C Hamano <junio@kernel.org>
 Date: Fri, 9 Jun 2006 00:44:16 -0700
 Subject: re: [PATCH] another patch
-Status: O
 
 From: A U Thor <a.u.thor@example.com>
 Subject: [PATCH] another patch
@@ -421,7 +413,6 @@ Date: Mon, 17 Sep 2001 00:00:00 +0900
 Mime-Version: 1.0
 Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: Quoted-Printable
-Status: O
 
 =0A=0AFrom: F U Bar <f.u.bar@example.com>
 Subject: [PATCH] updates=0A=0AThis is to fix diff-format documentation.
@@ -480,7 +471,6 @@ From: A U Thor <a.u.thor@example.com>
 Subject: [PATCH 3/3 v2] Xyzzy
 MIME-Version: 1.0
 Content-Type: multipart/mixed; boundary="=-=-="
-Status: 
 
 --=-=-=
 Content-Type: text/plain; charset=ISO8859-15
@@ -525,7 +515,6 @@ Subject: [Navy-patches] [PATCH]
 	=?utf-8?b?0JjQt9C80LXQvdGR0L0g0YHQv9C40YHQvtC6INC/0LA=?=
 	=?utf-8?b?0LrQtdGC0L7QsiDQvdC10L7QsdGF0L7QtNC40LzRi9GFINC00LvRjyA=?=
 	=?utf-8?b?0YHQsdC+0YDQutC4?=
-Status: O
 
 textlive-* исправлены на texlive-*
 docutils заменён на python-docutils
@@ -573,7 +562,6 @@ From nobody Mon Sep 17 00:00:00 2001
 From: Junio Hamano <junkio@cox.net>
 Date: Thu, 20 Aug 2009 17:18:22 -0700
 Subject: Why doesn't git-am does not like >8 scissors mark?
-Status: O
 
 Subject: [PATCH] BLAH ONE
 
@@ -679,7 +667,6 @@ From nobody Mon Sep 17 00:00:00 2001
 From: A U Thor <a.u.thor@example.com>
 Subject: check bogus body header (date)
 Date: Fri, 9 Jun 2006 00:44:16 -0700
-Status: O
 
 Date: bogus
 
