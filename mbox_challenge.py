@@ -33,15 +33,16 @@ def reverse_payload(mail_message):
             #div = '------------------------'
     else:
     # create new message with reversed 
-        print(mail_message.__dict__)
+        #print(mail_message.__dict__)
         #orig_content = mbox_msg.get_payload()
-        print(payload)
+        #print(payload)
         #print(type(payload))
         lines = payload.splitlines()
         rev_lines = lines[::-1]
         rev_payload = "\n".join(rev_lines)
-        print(rev_payload)
+        #print(rev_payload)
         return rev_payload
+
 
 
 def revise_msg(mbox_msg):
@@ -50,10 +51,19 @@ def revise_msg(mbox_msg):
     # of the message body/payload in reverse order.
     # returns the new Mbox message.
     msg = mbox_msg
+    content_type = msg.get('Content-Type')
+    encoding = msg.get('Content-Transfer-Encoding')
+    
     msg_content = reverse_payload(msg)
-    utf8msg = msg_content.encode("utf-8")
-    print(utf8msg)
-    #print(msg_content)
+    if 'Content-Transfer-Encoding' in msg:
+        if '8bit' in encoding.lower():
+            msg_content = msg_content.encode("utf-8")
+        else:
+            # TODO: handle other encodings (i.e. base64, Binary, x-token)
+            pass
+
+    #print(utf8msg)
+    print(msg_content)
     msg.set_payload(msg_content)
     return msg
     #reverse_payload(msg)
@@ -64,17 +74,15 @@ out_file = 'data/revised_mbox.full'
 
 try:
     revised_mbox = mb.mbox(out_file)
-    #for message in mbox:
-    message = mbox[9]
-    #print(message.get_payload())
-    #print('\n\n')
-    new_msg = revise_msg(message)
-    #print(vars(new_msg))
-    #revised_mbox.add(new_msg)
-    #print('success')
+    for message in mbox:
+        #message = mbox[0]
+        new_msg = revise_msg(message)
+        #print(vars(new_msg))
+        revised_mbox.add(new_msg)
+        #print('success')
 finally:
     mbox.unlock()
-    revised_mbox.clear()
+    #revised_mbox.clear()
     mbox.close()
 #if __name__ == '__main__':
     
