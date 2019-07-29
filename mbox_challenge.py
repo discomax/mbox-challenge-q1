@@ -9,27 +9,22 @@ mbox.lock()
 
 
 
-
-
-    #returns a message list
-
 def reverse_payload(mail_message):
     msg = mail_message
     payload = msg.get_payload()
     
     lines = payload.splitlines()
-    rev_lines = lines[::-1]
-    rev_payload = "\n".join(rev_lines)
-    print(rev_payload)
+    reversed_lines = lines[::-1]
+    reversed_payload = "\n".join(reversed_lines)
     content_type = msg.get('Content-Type')
     encoding = msg.get('Content-Transfer-Encoding')
     if 'Content-Transfer-Encoding' in msg:
         if '8bit' in encoding.lower():
-            rev_payload = rev_payload.encode("utf-8")
+            reversed_payload = reversed_payload.encode("utf-8")
         else:
             # TODO: handle other encodings (i.e. base64, Binary, x-token)
             pass
-    return rev_payload
+    return reversed_payload
 
 
 def process_multipart(mail_message):
@@ -62,7 +57,6 @@ def process_multipart(mail_message):
     return msg
 
             
-
 def revise_msg(mail_message):
     # takes an Mbox mail meassage as the argument
     # creates a new Mbox meassage instance with the lines 
@@ -81,9 +75,6 @@ def revise_msg(mail_message):
     return msg
     #reverse_payload(msg)
     
-
-
-#for message in mbox:
 
 try:
     out_file = 'data/revised_mbox.full'
