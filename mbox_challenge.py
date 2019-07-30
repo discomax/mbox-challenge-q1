@@ -1,12 +1,11 @@
 
 import mailbox as mb
-from email import message, charset, policy
+from email import message
 
-# Store the file path associated with the file (note the backslash may be OS specific)
+# Store the file path associated with the file (backslash may be OS specific)
 imput_file = 'data/mbox.full'
 mbox = mb.mbox(imput_file)
 mbox.lock()
-
 
 
 def reverse_payload(mail_message):
@@ -27,12 +26,18 @@ def reverse_payload(mail_message):
     return reversed_payload
 
 
-def process_multipart(mail_message):
-    msg = mail_message
-    payload = msg.get_payload()
-    print(len(payload))
+def process_multipart(msg, payload=[]):
+    """
+    Reverse lines of multipart payload's string part.
+
+    Keyword arguments:
+    msg -- a multipart email Message object
+    payload -- list of messages (default [])
+    """
+    content = msg.get_payload()
+    #print(len(payload))
     new_payload = []
-    print(type(payload))
+    #print(type(payload))
     '''for sub_msg in payload:
         if sub_msg.is_multipart():
             process_multipart(sub_msg)
@@ -48,7 +53,7 @@ def process_multipart(mail_message):
         else:
             #sub_msg = sub_msg.make_mixed()
             sub_msg = '''
-    sub_msg = payload[0]
+    sub_msg = content[0]
     sub_msg.set_payload(reverse_payload(sub_msg))
     msg.set_payload(new_payload)
     msg.attach(sub_msg)
@@ -66,6 +71,7 @@ def revise_msg(mail_message):
     
     
     if msg.is_multipart():
+        print(msg.is_multipart.__doc__)
         msg = process_multipart(msg)
         pass
     else:
@@ -79,16 +85,18 @@ def revise_msg(mail_message):
 try:
     out_file = 'data/revised_mbox.full'
     revised_mbox = mb.mbox(out_file)
-    for Message in mbox:
-        #Message = mbox[10]
-        NewMessage = revise_msg(Message)
-        #print(vars(new_msg))
-        revised_mbox.add(NewMessage)
-        #print('success')
+    #for Message in mbox:
+    Message = mbox[10]
+    NewMessage = revise_msg(Message)
+    #print(vars(new_msg))
+    revised_mbox.add(NewMessage)
+    #print('success')
 finally:
     mbox.unlock()
     #revised_mbox.clear()
     mbox.close()
+
+
 #if __name__ == '__main__':
     
 #print(repr(msg_body))
