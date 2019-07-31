@@ -99,6 +99,6 @@ def mbox_challenge(in_file, out_file):
 
 
 if __name__ == "__main__":
-    mbox_in = 'date/mbox.full'
+    mbox_in = 'data/mbox.full'
     mbox_out = 'data/revised_mbox.full'
     mbox_challenge(mbox_in, mbox_out)
