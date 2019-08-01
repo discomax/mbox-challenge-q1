@@ -7,28 +7,40 @@ from email import message
 #mbox = mb.mbox(imput_file)
 #mbox.lock()
 
-def pop_signature(line_list, delim='-- '):
-    '''If present, split the signature from the lines.
+def pop_signature(lines, delim='-- '):
+    '''Splits content into body and signature
 
-    Keyword argumants:
-    line_list --  a list of strings from email's payload.
-    delim -- str which marks start of email signature.(default '-- ')
+    Args:
+        lines (list) --  a list of strings from email's payload.
+        delim (str) -- start of email's signature. (default '-- ')
+
+    Returns:
+        new_lines (list) -- strings of the message body.
+        sig_list (list) -- strings of the message signature.
     '''
-    if delim in line_list:
-        new_list = line_list[:line_list.index(delim)]
-        sig_list = line_list[line_list.index(delim):]
-
-        return new_list, sig_list
-    else:
-        sig_list = []
-
-        return line_list, sig_list
+    new_lines = lines
+    sig_list = []
+    if delim in lines:
+        new_lines = lines[:lines.index(delim)]
+        sig_list = lines[lines.index(delim):]
+    return new_lines, sig_list
 
 
-def reverse_payload(mail_message):
-    msg = mail_message
+def reverse_payload(msg):
+    '''
+    Returns a singlepart email's content in reversed order.
+
+    This will take the individual lines of a message's 
+    content string (payload) and reorder them last to first. 
+    Any signature will remain at the end of the reordered string.
+
+    Args:
+        msg (email.Message) -- a singlepart email Message.
+
+    Returns:
+        reversed_payload(str) -- message content in reverse order.
+    '''
     payload = msg.get_payload()
-    
     lines, signature = pop_signature(payload.splitlines())
     reversed_lines = lines[::-1]
     reversed_lines.extend(signature)
@@ -41,64 +53,76 @@ def reverse_payload(mail_message):
         else:
             # TODO: handle other encodings (i.e. base64, Binary, x-token)
             pass
-    
     return reversed_payload
 
 
-
 def process_multipart(msg, payload=[]):
-    """
-    Reverse lines of multipart payload's string part.
+    '''
+    Reverse the messages singlepart content in the payload.
 
-    Keyword arguments:
-    msg -- a multipart email Message object
-    payload -- list of messages (default [])
-    """
+    Assuming the msg argument is a multipart/mixed message
+    containing only a singlepart message in it's payload,
+    this will reverse the payload of that singlepart message
+    and reinsert it in the multipart/mixed message's payload.
+    
+    Args:
+        msg (email.Message): a multipart email Message object
+        payload (list): list of messages (default [])
+
+    Returns: 
+        msg (email.Message): object with the payload reversed per the discription
+
+    TODO: add recursion to process other types of multipart
+    messages.
+    '''
     content = msg.get_payload()
-    new_payload = []
     sub_msg = content[0]
     sub_msg.set_payload(reverse_payload(sub_msg))
-    msg.set_payload(new_payload)
+    msg.set_payload(payload)
     msg.attach(sub_msg)
-    
     return msg
 
 
+def mbox_challenge(infile, outfile):
+    '''
+    Format emails from mbox file, write to new mbox file
 
-def revise_msg(mail_message):
-    # takes an Mbox mail meassage as the argument
-    # creates a new Mbox meassage instance with the lines 
-    # of the message body/payload in reverse order.
-    # returns the new Mbox message.
-    msg = mail_message
-    if msg.is_multipart():
-        msg = process_multipart(msg)
-    else:
-        msg_content = reverse_payload(msg)    
-        msg.set_payload(msg_content)
-    return msg
+    Take each email message in a in an mbox formated mailbox and
+    reverse the order of the lines of text in the message body
+    from last to first. Create a new mbox formatted mailbox and
+    save it to a new file.
 
+    Args:
+        infile (.full): file containing email mailbox
+        outfile (.full): new file for saving mailbox w/ formatted messages
 
-
-def mbox_challenge(in_file, out_file):
-    with open(in_file):
-        try:
-            mbox = mb.mbox(in_file)
-            mbox.lock()
-            revised_mbox = mb.mbox(out_file)
-            for Message in mbox:
-                #Message = mbox[4]
-                NewMessage = revise_msg(Message)
+    Raises:
+        Error: problem reading, formatting or writing the mbox
+    '''
+    try:
+        mbox = mb.mbox(infile)
+        mbox.lock()
+        revised_mbox = mb.mbox(outfile)
+        for Message in mbox:
+            if Message.is_multipart():
+                NewMessage = process_multipart(Message)
                 revised_mbox.add(NewMessage)
-        except (mb.NoSuchMailboxError, mb.FormatError) as e:
-            print('Error Occurerd: ', e)
-        finally:
-            revised_mbox.close()
-            mbox.unlock()
-
+            else:
+                msg_content = reverse_payload(Message)    
+                Message.set_payload(msg_content)
+                revised_mbox.add(Message)
+    except mb.Error:
+        print('An error occurred. Please check the file contents')
+    finally:
+        revised_mbox.close()
+        mbox.unlock()
 
 
 if __name__ == "__main__":
-    mbox_in = 'data/mbox.full'
-    mbox_out = 'data/revised_mbox.full'
-    mbox_challenge(mbox_in, mbox_out)
+    filename= 'data/mbox.full'
+    new_filename = 'data/revised_mbox.full'
+    try:
+        with open(filename):
+            mbox_challenge(filename, new_filename)
+    except IOError as e:
+        print(e)
