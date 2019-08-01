@@ -1,4 +1,4 @@
-##Mbox Challenge
+# Mbox Challenge
 
 This script reads an email mbox file filled with singlepart
 and multipart/mixed email messages with a content  type of 
